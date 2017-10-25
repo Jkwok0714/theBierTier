@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/biers', {useMongoClient: true});
+// const dbURL = process.env.DATABASE_URL || 'mongodb://localhost/biers';
+const dbURL = 'mongodb://localhost/biers';
+mongoose.connect(dbURL, {useMongoClient: true});
 
 let bierSchema = mongoose.Schema({
   name: String,
@@ -31,12 +33,11 @@ const save = (options) => {
 
 const fetch = () => {
   return new Promise ((resolve, reject) => {
-    Progression.find((err, results) => {
+    Bier.find((err, results) => {
       if (err) {
         console.error(err);
         reject(err);
       } else {
-        console.log(results);
         resolve(results);
       }
     });
@@ -45,7 +46,7 @@ const fetch = () => {
 
 const find = (query, callback) => {
   return new Promise ((resolve, reject) => {
-    Repo.find(query, (err, data) => {
+    Bier.find(query, (err, data) => {
       if (err) {
         reject(err);
       } else {
