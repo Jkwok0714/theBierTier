@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-const SERVER_URL = process.env.SERVER_URL || 'http://127.0.0.1:3000';
+const HOSTNAME = process.env.SERVER_URL || 'http://127.0.0.1:3000';
 // import logo from './logo.svg';
 // import './App.css';
 
@@ -14,9 +14,11 @@ class App extends Component {
   }
 
   componentDidMount () {
+    console.log('About to post to:', SERVER_URL + '/login');
     $.post(SERVER_URL + '/login', {}).then((res) => {
       window.alert('Server responded!');
     }).catch((err) => {
+      console.error(err);
       window.alert('Couldn\'t contact server!');
     });
   }
