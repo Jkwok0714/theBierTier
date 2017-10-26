@@ -1,8 +1,8 @@
-let database = require('../database/index');
+const database = require('../database/index');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-let app = express();
+const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
@@ -11,14 +11,23 @@ let port = 3000;
 
 // ==== ROUTES ====
 
+app.get('/test', (req, res) => {
+  res.status(200);
+  // res.set('Content-Type', 'application/json');
+  res.end('Future home of EL BIERRES TIERRES. OLÉ');
+});
+
+app.post('/login', (req, res) => {
+  console.log('Got a login request!');
+  res.status(200);
+  res.send('Loginnnn');
+});
+
+app.post('/beer', (req, res) => {
+
+});
 
 // ==== SERVER ====
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
-});
-
-app.get('/test', function (req, res) {
-  res.status(200);
-  // res.set('Content-Type', 'application/json');
-  res.end('Future home of EL BIERRES TIERRES. OLÉ');
 });
