@@ -8,7 +8,8 @@
 
 # production
 /build
-client/dist/bundle.js
+client/dist/index.bundle.js
+client/dist/main.bundle.js
 
 # misc
 .DS_Store

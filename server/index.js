@@ -1,11 +1,11 @@
 const database = require('../database/index');
+const questions = require('./questions.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
-app.use(bodyParser.json());
 
 let port = 3000;
 
@@ -13,6 +13,10 @@ app.use((req, res, next) => {
   console.log(req.method, req.url);
   next();
 })
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 // ==== ROUTES ====
 
@@ -25,11 +29,19 @@ app.get('/test', (req, res) => {
 app.post('/login', (req, res) => {
   console.log('Got a login request!');
   res.status(200);
-  res.send('Loginnnn');
+  var q = questions.questions[Math.floor(Math.random() * questions.questions.length)];
+  res.send(q);
 });
 
-app.post('/beer', (req, res) => {
-
+app.post('/answer', (req, res) => {
+  console.log('Got a login reply!', req.body.a);
+  if (questions.answers[questions.questions.indexOf(req.body.q)] === req.body.a.toLowerCase()) {
+    res.status(200);
+    res.send('Great');
+  } else {
+    res.status(200);
+    res.send('Bad');
+  }
 });
 
 // ==== SERVER ====
