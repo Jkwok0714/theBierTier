@@ -1,6 +1,7 @@
 const database = require('../database/index');
 const questions = require('./questions.js');
 
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -36,12 +37,17 @@ app.post('/login', (req, res) => {
 app.post('/answer', (req, res) => {
   console.log('Got a login reply!', req.body.a);
   if (questions.answers[questions.questions.indexOf(req.body.q)] === req.body.a.toLowerCase()) {
-    res.status(200);
-    res.send('Great');
+    res.redirect('/dashboard');
+    // res.status(200);
+    // res.send('Great');
   } else {
     res.status(200);
     res.send('Bad');
   }
+});
+
+app.get('/dashboard', (req, res) => {
+  res.status(200).contentType('text/html').sendFile(path.resolve(__dirname + '/../client/dist/main.html'));
 });
 
 // ==== SERVER ====

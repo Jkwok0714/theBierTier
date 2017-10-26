@@ -38,6 +38,12 @@ class App extends Component {
       }
     }).then((res) => {
       console.log(res);
+      if (res === 'Bad') {
+        window.alert('Wrong answer!');
+      } else {
+        window.location.replace('/dashboard');
+        // location.reload();
+      }
     }).catch((err) => {
       console.error(err);
     });
