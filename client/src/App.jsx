@@ -18,7 +18,9 @@ class App extends Component {
     let self = this;
     console.log('About to post to:', HOSTNAME + '/login');
     $.post(HOSTNAME + '/login', {}).then((res) => {
-      // window.alert('Server responded!');
+      if (res === 'All clear') {
+        window.location.replace('/dashboard');
+      }
       self.setState({
         question: res
       });

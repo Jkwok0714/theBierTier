@@ -3,6 +3,7 @@ const questions = require('./questions.js');
 
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // ==== ROUTES ====
 
@@ -29,6 +31,10 @@ app.get('/test', (req, res) => {
 
 app.post('/login', (req, res) => {
   console.log('Got a login request!');
+  if (req.cookies.Serenna === 'Azurell') {
+    res.status(200);
+    res.send('All clear');
+  }
   res.status(200);
   var q = questions.questions[Math.floor(Math.random() * questions.questions.length)];
   res.send(q);
@@ -36,10 +42,9 @@ app.post('/login', (req, res) => {
 
 app.post('/answer', (req, res) => {
   console.log('Got a login reply!', req.body.a);
-  if (questions.answers[questions.questions.indexOf(req.body.q)] === req.body.a.toLowerCase()) {
+  if (questions.answers[questions.questions.indexOf(req.body.q)] === req.body.a.toLowerCase().trim()) {
+    res.cookie('Serenna', 'Azurell', { expires: new Date(Date.now() + 900000), httpOnly: true });
     res.redirect('/dashboard');
-    // res.status(200);
-    // res.send('Great');
   } else {
     res.status(200);
     res.send('Bad');
@@ -47,7 +52,12 @@ app.post('/answer', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  res.status(200).contentType('text/html').sendFile(path.resolve(__dirname + '/../client/dist/main.html'));
+  if (req.cookies.Serenna !== 'Azurell') {
+    res.status(200);
+    res.redirect('/');
+  } else {
+    res.status(200).contentType('text/html').sendFile(path.resolve(__dirname + '/../client/dist/main.html'));
+  }
 });
 
 // ==== SERVER ====
