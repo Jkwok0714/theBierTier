@@ -6,9 +6,9 @@ module.exports = {
     'Who is the only and only true prophet?',
     'What is the name of my Soveran party?'],
   answers: [
-    '-814214742',
-    '696709397',
-    '-1091797866',
-    '199330507',
-    '1896464087']
+    -814214742,
+    696709397,
+    -1091797866,
+    199330507,
+    1896464087]
 };

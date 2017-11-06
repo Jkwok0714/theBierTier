@@ -32,6 +32,7 @@ app.get('/test', (req, res) => {
 
 app.post('/login', (req, res) => {
   console.log('Got a login request!');
+  //Ultimate security
   if (req.cookies.Serenna === 'Azurell') {
     res.status(200);
     res.send('All clear');
@@ -43,7 +44,10 @@ app.post('/login', (req, res) => {
 
 app.post('/answer', (req, res) => {
   console.log('Got a login reply!', req.body.a);
-  if (questions.answers[questions.questions.indexOf(req.body.q)] === helpers.hashCode(req.body.a.toLowerCase().trim())) {
+  let actualAnswer = helpers.hashCode(req.body.a.toLowerCase().trim());
+  let expectedAnswer = questions.answers[questions.questions.indexOf(req.body.q)];
+  console.log(actualAnswer, '<===>', expectedAnswer);
+  if (actualAnswer === expectedAnswer) {
     res.cookie('Serenna', 'Azurell', { expires: new Date(Date.now() + 900000), httpOnly: true });
     res.redirect('/dashboard');
   } else {
@@ -62,11 +66,34 @@ app.get('/dashboard', (req, res) => {
 });
 
 app.get('/biers', (req, res) => {
-
+  console.log('Fetching biers');
+  database.fetch().then((data) => {
+    res.status(200);
+    res.send(data);
+  }).catch((err) => {
+    res.status('500');
+    console.error(err);
+    res.send(err);
+  });
 });
 
 app.post('/biers', (req, res) => {
-
+  console.log(req.body);
+  // database.save({
+  //   name: 'Benbier',
+  //   brewery: 'Bennest Point',
+  //   style: 'American Adjunct Lager',
+  //   tier: Math.floor(Math.random()*3) + 3,
+  //   url: '',
+  //   tastingNote: 'Only a fluff would like this one',
+  //   date: '1/6/66',
+  //   hops: ['Citra'],
+  //   profile: ['Janky']
+  // }).then((res) => {
+  //   console.log('Saved new entry');
+  // }).catch((err) => {
+  //   console.error(err);
+  // });
 });
 
 // ==== SERVER ====
