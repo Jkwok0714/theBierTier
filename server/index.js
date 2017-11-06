@@ -1,5 +1,6 @@
 const database = require('../database/index');
 const questions = require('./questions.js');
+const helpers = require('./helpers.js');
 
 const path = require('path');
 const express = require('express');
@@ -42,7 +43,7 @@ app.post('/login', (req, res) => {
 
 app.post('/answer', (req, res) => {
   console.log('Got a login reply!', req.body.a);
-  if (questions.answers[questions.questions.indexOf(req.body.q)] === req.body.a.toLowerCase().trim()) {
+  if (questions.answers[questions.questions.indexOf(req.body.q)] === helpers.hashCode(req.body.a.toLowerCase().trim())) {
     res.cookie('Serenna', 'Azurell', { expires: new Date(Date.now() + 900000), httpOnly: true });
     res.redirect('/dashboard');
   } else {
@@ -58,6 +59,14 @@ app.get('/dashboard', (req, res) => {
   } else {
     res.status(200).contentType('text/html').sendFile(path.resolve(__dirname + '/../client/dist/main.html'));
   }
+});
+
+app.get('/biers', (req, res) => {
+
+});
+
+app.post('/biers', (req, res) => {
+
 });
 
 // ==== SERVER ====
