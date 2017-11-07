@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+// import $ from 'jquery';
 import BeerList from './components/BeerList.jsx';
+import TopBar from './components/TopBar.jsx';
+import AddBeer from './components/AddBeer.jsx';
 
 
 const HOSTNAME = SERVER_URL || 'http://127.0.0.1:3000';
@@ -13,6 +15,7 @@ class Dashboard extends Component {
     this.state = {
       view: 'BeerList',
       beerList: [],
+      filteredList: [],
       selectedBeer: undefined
     };
   }
@@ -23,7 +26,8 @@ class Dashboard extends Component {
     $.get(HOSTNAME + '/biers').then((res) => {
       // window.alert('Server responded!');
       self.setState({
-        beerList: res
+        beerList: res,
+        filteredList: res
       });
     }).catch((err) => {
       console.error(err);
@@ -31,14 +35,28 @@ class Dashboard extends Component {
     });
   }
 
+  changeView (viewInput) {
+    this.setState({ view: viewInput });
+  }
+
+  getViewComponent () {
+		if (this.state.view === 'AddBeer') {
+      return <AddBeer changeView={this.changeView.bind(this)}/>;
+		} else {
+			return <BeerList beerList={this.state.filteredList} changeView={this.changeView.bind(this)}/>;
+		}
+	}
+
   render () {
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">The Bier Tiers</h1>
         </header>
+
         <h2>The App</h2>
-        <BeerList beerList={this.state.beerList} />
+        <TopBar beerList={this.state.beerList} changeView={this.changeView.bind(this)} currView={this.state.view}/>
+        {this.getViewComponent()}
         <br /><br />
         Current host: {SERVER_URL}
       </div>

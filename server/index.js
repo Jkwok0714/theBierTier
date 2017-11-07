@@ -12,6 +12,8 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 let port = 3000;
 
+// ==== MIDDLEWARE ====
+
 app.use((req, res, next) => {
   console.log(req.method, req.url);
   next();
@@ -46,7 +48,7 @@ app.post('/answer', (req, res) => {
   console.log('Got a login reply!', req.body.a);
   let actualAnswer = helpers.hashCode(req.body.a.toLowerCase().trim());
   let expectedAnswer = questions.answers[questions.questions.indexOf(req.body.q)];
-  console.log(actualAnswer, '<===>', expectedAnswer);
+  // console.log(actualAnswer, '<===>', expectedAnswer);
   if (actualAnswer === expectedAnswer) {
     res.cookie('Serenna', 'Azurell', { expires: new Date(Date.now() + 900000), httpOnly: true });
     res.redirect('/dashboard');
@@ -67,6 +69,7 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/biers', (req, res) => {
   console.log('Fetching biers');
+  res.cookie('Serenna', 'Azurell', { expires: new Date(Date.now() + 900000), httpOnly: true });
   database.fetch().then((data) => {
     res.status(200);
     res.send(data);
