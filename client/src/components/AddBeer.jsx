@@ -24,9 +24,6 @@ class AddBeer extends React.Component {
   }
 
   onChange (e, stateToChange) {
-    // window.alert('Change detected');
-    // console.log(typeof e.target.value);
-
     this.state[stateToChange] = e.target.value;
     console.log(stateToChange + ': ', this.state[stateToChange]);
   }
@@ -47,8 +44,12 @@ class AddBeer extends React.Component {
       console.log('Postededed');
     }).catch((err) => {
       console.error(err);
-      // window.alert('Couldn\'t contact server!');
     });
+    this.goBack();
+  }
+
+  goBack () {
+    this.props.changeView('BeerList');
   }
 
   render() {
@@ -68,6 +69,7 @@ class AddBeer extends React.Component {
         <option value='6'>6 - Satan's Asshole</option>
       </select>
       <button onClick={this.submit.bind(this)}> Submit New Beer </button>
+      <button onClick={this.goBack.bind(this)}> Cancel </button>
     </div>)
   }
 }

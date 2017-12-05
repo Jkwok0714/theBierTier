@@ -44,7 +44,6 @@ class App extends Component {
         window.alert('Wrong answer!');
       } else {
         window.location.replace('/dashboard');
-        // location.reload();
       }
     }).catch((err) => {
       console.error(err);

@@ -6,7 +6,7 @@ const BeerList = (props) => (
     <div className="beerList">
       <div className="beerList-table">
         {props.beerList.map((beer) =>
-          <BeerListEntry beer={beer} key={beer._id} />
+          <BeerListEntry beer={beer} key={beer._id} changeBeer={props.changeBeer} changeView={props.changeView} />
         )}
       </div>
     </div>

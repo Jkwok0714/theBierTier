@@ -52,6 +52,7 @@ class TopBar extends React.Component {
 
   render() {
     return (<div>
+      <button onClick={() => this.props.changeView('BeerList')}> Bier List </button>
       <button onClick={() => this.props.changeView('AddBeer')}> Add Bier </button>
       <button onClick={this.search.bind(this)}> See Breakdown </button>
       {this.checkBeerList()}

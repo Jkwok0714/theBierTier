@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import BeerList from './components/BeerList.jsx';
 import TopBar from './components/TopBar.jsx';
 import AddBeer from './components/AddBeer.jsx';
+import BeerView from './components/BeerView.jsx';
 
 
 const HOSTNAME = SERVER_URL || 'http://127.0.0.1:3000';
@@ -39,11 +40,18 @@ class Dashboard extends Component {
     this.setState({ view: viewInput });
   }
 
+  changeBeer (beer) {
+    console.log('Changing beer to', beer);
+    this.setState({ selectedBeer: beer });
+  }
+
   getViewComponent () {
 		if (this.state.view === 'AddBeer') {
       return <AddBeer changeView={this.changeView.bind(this)}/>;
+    } else if (this.state.view === 'BeerView') {
+      return <BeerView changeView={this.changeView.bind(this)} beer={this.state.selectedBeer}/>;
 		} else {
-			return <BeerList beerList={this.state.filteredList} changeView={this.changeView.bind(this)}/>;
+			return <BeerList beerList={this.state.filteredList} changeBeer={this.changeBeer.bind(this)} changeView={this.changeView.bind(this)}/>;
 		}
 	}
 
@@ -53,12 +61,12 @@ class Dashboard extends Component {
         <header className="App-header">
           <h1 className="App-title">The Bier Tiers</h1>
         </header>
-
-        <h2>The App</h2>
+        <hr />
         <TopBar beerList={this.state.beerList} changeView={this.changeView.bind(this)} currView={this.state.view}/>
+        <hr />
         {this.getViewComponent()}
         <br /><br />
-        Current host: {SERVER_URL}
+        <span className="hostSpan">Current host: {SERVER_URL}</span>
       </div>
     );
   }
